@@ -1,0 +1,10 @@
+streamlit
+pathlib
+google-generativeai
+IPython
+python-dotenv
+fitz
+PyMuPDF
+
+matplotlib
+yfinance
