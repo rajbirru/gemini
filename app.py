@@ -15,8 +15,11 @@ def to_markdown(text):
   text = text.replace('•', '  *')
   return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
-os.getenv("GOOGLE_API_KEY")
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+# os.getenv("GOOGLE_API_KEY")
+# genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+
+# Access your GOOGLE_API_KEY
+google_api_key = st.secrets["GOOGLE_API_KEY"]
 
 ## Function to load OpenAI model and get respones
 def get_gemini_response(question):
