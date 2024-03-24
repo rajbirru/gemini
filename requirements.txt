@@ -8,3 +8,8 @@ PyMuPDF
 
 matplotlib
 yfinance
+
+pillow
+re
+
+pyttsx3
