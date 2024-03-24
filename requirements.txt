@@ -5,10 +5,8 @@ IPython
 python-dotenv
 fitz
 PyMuPDF
-
 matplotlib
 yfinance
-
 pillow
-
 pyttsx3
+langchain_core
