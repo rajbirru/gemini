@@ -9,4 +9,4 @@ matplotlib
 yfinance
 pillow
 pyttsx3
-langchain_core
+langchain

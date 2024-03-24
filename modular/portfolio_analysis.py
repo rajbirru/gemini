@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from langchain_core.prompts import PromptTemplate
+from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain_community.llms import OpenAI  # Make sure to update to langchain-openai as suggested if applicable
 from langchain_openai import OpenAI
