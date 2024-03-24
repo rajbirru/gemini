@@ -61,11 +61,19 @@ if submit_button:
                 f"{get_system_context()}\n{get_response_template()}\n"
                 f"Given a {age}-year-old individual aiming for retirement by age {retirement_age} "
                 f"with a {risk_profile.lower()} risk profile, "
-                f"{input_question}"
+                f"{input_question}\n"
+                "Considering current market conditions, suggest a diversified portfolio of 10 to 20 stocks and ETFs. "
+                "Provide a brief rationale for each recommendation."
             )
+
+            # Print the constructed prompt for debugging purposes
+            print("Constructed Prompt:")
+            print(detailed_prompt)
+
             # Call get_gemini_response with the constructed detailed prompt and other required arguments
             st.session_state['response'] = get_gemini_response(input_question, detailed_prompt, age, retirement_age, risk_profile)
             st.session_state['recommended_stocks'] = extract_recommended_stocks(st.session_state['response'])
+
         except Exception as e:
             st.error(f"An error occurred while generating advice: {str(e)}")
 
