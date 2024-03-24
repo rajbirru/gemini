@@ -8,6 +8,6 @@ PyMuPDF
 matplotlib
 yfinance
 pillow
-pyttsx3
 langchain
 langchain_openai
+gtts

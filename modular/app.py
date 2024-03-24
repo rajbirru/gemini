@@ -1,4 +1,7 @@
 import streamlit as st
+from gtts import gTTS
+from io import BytesIO
+import pandas as pd
 from model import get_gemini_response
 from styles import load_styles
 from utils import extract_recommended_stocks
@@ -7,10 +10,10 @@ from prompt_templates import get_response_template
 from portfolio_analysis import run_portfolio_analysis
 from visualizations import create_gradient_bar
 import re
-import pyttsx3
+# import pyttsx3
 
-# Initialize the text-to-speech engine globally
-engine = pyttsx3.init()
+# # Initialize the text-to-speech engine globally
+# engine = pyttsx3.init()
 
 # Must be the first command in your app
 st.set_page_config(page_title="AI Driven Financial Advisor", layout="wide")
@@ -22,8 +25,11 @@ st.markdown(load_styles(), unsafe_allow_html=True)
 st.markdown("<h1 style='color: #2E86C1;'>AI Driven Financial Advisor</h1>", unsafe_allow_html=True)
 
 def read_text(text):
-    engine.say(text)
-    engine.runAndWait()
+    tts = gTTS(text, lang='en')
+    mp3_fp = BytesIO()
+    tts.write_to_fp(mp3_fp)
+    mp3_fp.seek(0)
+    st.audio(mp3_fp, format='audio/mp3')
 
 # Define session state for the responses and context if not already defined
 if 'response' not in st.session_state:
@@ -50,8 +56,15 @@ with st.container():
 if submit_button:
     with st.spinner("Generating advice..."):
         try:
-            context = f"{get_system_context()}\n{get_response_template()}"
-            st.session_state['response'] = get_gemini_response(input_question, context, age, retirement_age, risk_profile)
+            # Construct the detailed prompt using the provided arguments
+            detailed_prompt = (
+                f"{get_system_context()}\n{get_response_template()}\n"
+                f"Given a {age}-year-old individual aiming for retirement by age {retirement_age} "
+                f"with a {risk_profile.lower()} risk profile, "
+                f"{input_question}"
+            )
+            # Call get_gemini_response with the constructed detailed prompt and other required arguments
+            st.session_state['response'] = get_gemini_response(input_question, detailed_prompt, age, retirement_age, risk_profile)
             st.session_state['recommended_stocks'] = extract_recommended_stocks(st.session_state['response'])
         except Exception as e:
             st.error(f"An error occurred while generating advice: {str(e)}")
@@ -97,6 +110,6 @@ if table_match:
 # Enable this section if you want to include portfolio analysis directly in app.py, ensuring you have the necessary logic in place
 # Make sure to handle the file object directly without assuming it's saved on disk
 # st.markdown("<h2 style='color: #2E86C1;'>Portfolio Analysis</h2>", unsafe_allow_html=True)
-run_portfolio_analysis(engine, st.session_state['response'])
+run_portfolio_analysis(st.session_state['response'])
 
 # Remember to pass the engine as an argument to functions needing text-to-speech capabilities

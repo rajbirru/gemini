@@ -5,7 +5,7 @@ import openai
 import os
 
 # Load the OpenAI API key from the environment variable
-openai_api_key = os.getenv('OPENAI_API_KEY')
+openai_api_key = st.secrets["OPENAI_API_KEY"]
 openai.api_key = openai_api_key
 
 def fetch_etf_recommendations(risk_profile, age, retirement_age):
